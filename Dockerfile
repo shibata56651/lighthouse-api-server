@@ -19,17 +19,17 @@ RUN apt update && apt install -y --no-install-recommends google-chrome-stable ||
     (curl -fsSL https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb -o /tmp/chrome.deb && \
     dpkg -i /tmp/chrome.deb || apt --fix-broken install -y && rm /tmp/chrome.deb)
 
-# ✅ ホストのコードをコピー
-COPY . .
-
-# ✅ 所有権を node ユーザーに変更
-RUN chown -R node:node /home/node/app
-
 # ✅ 最新 npm
 RUN npm install -g npm
 
 # ✅ 作業ディレクトリ
 WORKDIR /home/node/app
+
+# ✅ ホストのコードをコピー
+COPY . .
+
+# ✅ 所有権を node ユーザーに変更
+RUN chown -R node:node /home/node/app
 
 # ✅ nodeユーザーで実行する準備
 USER node
