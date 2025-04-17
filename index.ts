@@ -7,7 +7,7 @@ const app = express();
 app.use(
   cors({
     origin: "https://a11y-tool-collections.vercel.app", // ← あなたのフロントURL
-    methods: ["POST"],
+    methods: ["POST", "OPTIONS"],
     allowedHeaders: ["Content-Type"],
   })
 );
