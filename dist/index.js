@@ -2,7 +2,11 @@ import express from "express";
 import cors from "cors";
 import { runLighthouse } from "./lighthouse.js";
 const app = express();
-app.use(cors());
+app.use(cors({
+    origin: "https://a11y-tool-collections.vercel.app", // ← あなたのフロントURL
+    methods: ["POST"],
+    allowedHeaders: ["Content-Type"],
+}));
 app.use(express.json());
 // ✅ 複数URLに対応
 app.post("/api/lighthouse", async (req, res) => {
