@@ -2,9 +2,12 @@
   "compilerOptions": {
     "target": "ES2020",
     "module": "ESNext",
+    "outDir": "dist", // ✅ 出力ディレクトリ
+    "rootDir": ".",   // ✅ ソースのルート（index.tsやlighthouse.tsがある場所）
     "moduleResolution": "Node",
     "esModuleInterop": true,
     "strict": true,
     "skipLibCheck": true
-  }
+  },
+  "include": ["index.ts", "lighthouse.ts"]
 }

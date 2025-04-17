@@ -2,7 +2,8 @@
   "name": "lighthouse-api-server",
   "type": "module",
   "scripts": {
-    "start": "ts-node index.ts"
+    "build": "tsc",
+    "start": "node dist/index.js"
   },
   "dependencies": {
     "chrome-launcher": "^0.15.0",
