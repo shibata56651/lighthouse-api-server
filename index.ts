@@ -6,26 +6,25 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-// ✅ ハンドラーを別で定義
-const lighthouseHandler = async (req: Request, res: Response): Promise<void> => {
-  const { url } = req.body;
+// ✅ 複数URLに対応
+app.post("/api/lighthouse", async (req: Request, res: Response): Promise<void> => {
+  const { urls } = req.body;
 
-  if (!url || typeof url !== "string") {
-    res.status(400).json({ error: "Invalid URL" });
+  if (!Array.isArray(urls) || urls.length === 0) {
+    res.status(400).json({ error: "Invalid request: 'urls' must be a non-empty array of strings." });
     return;
   }
 
   try {
-    const result = await runLighthouse(url);
-    res.json(result);
+    const results = await Promise.all(
+      urls.map((url) => runLighthouse(url).catch((e) => ({ url, error: e.message || "Failed" })))
+    );
+    res.json(results);
   } catch (error: any) {
-    console.error("Lighthouse Error:", error);
-    res.status(500).json({ error: error.message || "Failed to run Lighthouse" });
+    console.error("Lighthouse API Error:", error);
+    res.status(500).json({ error: error.message || "Unknown error" });
   }
-};
-
-// ✅ 正しくバインドされる
-app.post("/api/lighthouse", lighthouseHandler);
+});
 
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => console.log(`🚀 Server running on port ${PORT}`));
