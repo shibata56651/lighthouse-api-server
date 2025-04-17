@@ -1,4 +1,4 @@
-import express from "express";
+import express, { Request, Response } from "express";
 import cors from "cors";
 import { runLighthouse } from "./lighthouse.js";
 
@@ -6,7 +6,7 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-app.post("/api/lighthouse", async (req, res) => {
+app.post("/api/lighthouse", async (req: Request, res: Response) => {
   const { url } = req.body;
   if (!url || typeof url !== "string") {
     return res.status(400).json({ error: "Invalid URL" });
