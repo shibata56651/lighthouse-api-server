@@ -22,19 +22,18 @@ RUN apt update && apt install -y --no-install-recommends google-chrome-stable ||
 # ✅ 最新 npm
 RUN npm install -g npm
 
-# ✅ 作業ディレクトリ
-WORKDIR /home/node/app
+# ✅ 作業ディレクトリを作成（root のまま）
+WORKDIR /app
 
-# ✅ ホストのコードをコピー
-COPY . .
+# ✅ アプリコードをコピーして権限変更（root のまま）
+COPY . /app
+RUN chown -R node:node /app
 
-# ✅ 所有権を node ユーザーに変更
-RUN chown -R node:node /home/node/app
-
-# ✅ nodeユーザーで実行する準備
+# ✅ 実行ユーザーを node に変更
 USER node
+WORKDIR /app
 
-# ✅ install / build / 起動
+# ✅ 依存インストールとビルド
 RUN npm install
 RUN npm run build
 
@@ -42,5 +41,5 @@ RUN npm run build
 ENV CHROME_PATH="/opt/google/chrome/google-chrome"
 ENV NODE_ENV=production
 
-# ✅ アプリの起動
+# ✅ アプリ起動
 CMD ["node", "dist/index.js"]
